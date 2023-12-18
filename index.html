@@ -31,8 +31,15 @@
 
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          // Redirect to user info page upon successful login
-          window.location.href = "user_info.html";
+          const user = userCredential.user;
+          // Check if email is verified
+          if (user.emailVerified) {
+            // Redirect to user info page upon successful login
+            window.location.href = "user_info.html";
+          } else {
+            // If email is not verified, display a message
+            document.getElementById('error-message').innerText = "Please verify your email to login.";
+          }
         })
         .catch((error) => {
           // Handle login errors
@@ -50,6 +57,7 @@
       <input type="email" id="email" placeholder="Enter your Email" required>
       <input type="password" id="password" placeholder="Enter your Password" required>
       <button type="button" onclick="login()">Login</button>
+      <br>
       <p id="error-message"></p>
     </form>
     <p>Don't have an account? <a href="signin.html">Sign up from here</a></p>
@@ -61,3 +69,4 @@
   </script>
 </body>
 </html>
+
