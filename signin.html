@@ -37,8 +37,17 @@
 
       firebase.auth().createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
-          // Sign up successful, redirect to login page
-          window.location.href = "index.html";
+          // Send email verification
+          userCredential.user.sendEmailVerification()
+            .then(() => {
+              // Verification email sent
+              // Redirect to login page
+              window.location.href = "index.html";
+            })
+            .catch((error) => {
+              // Handle errors while sending verification email
+              console.error(error);
+            });
         })
         .catch((error) => {
           // Handle signup errors
@@ -63,3 +72,4 @@
   </div>
 </body>
 </html>
+
